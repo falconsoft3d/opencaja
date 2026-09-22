@@ -9,3 +9,4 @@ class Config:
         "DATABASE_URL", f"sqlite:///{os.path.join(BASE_DIR, 'opencaja.db')}"
     )
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    MAX_CONTENT_LENGTH = 200 * 1024 * 1024  # 200 MB, límite para subir un respaldo

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Respaldos - OpenCaja{% endblock %}
+{% block page_title %}Respaldos{% endblock %}
+{% block content %}
+{% if not es_sqlite %}
+<div class="alert alert-warning" style="max-width: 640px;">
+  Esta función solo está disponible cuando la aplicación usa SQLite. Tu configuración actual
+  usa otro motor de base de datos (<code>DATABASE_URL</code>).
+</div>
+{% else %}
+<div class="card border-0 shadow-sm mb-3" style="max-width: 640px;">
+  <div class="card-body">
+    <h6 class="mb-3">Respaldar</h6>
+    {% if info %}
+    <p class="text-muted small mb-3">
+      Base de datos actual: {{ "%.2f"|format(info.size_mb) }} MB — última modificación
+      {{ info.modificado.strftime('%d/%m/%Y %H:%M') }}.
+    </p>
+    {% endif %}
+    <a href="{{ url_for('respaldo.descargar') }}" class="btn btn-primary">
+      <i class="bi bi-download me-1"></i>Descargar respaldo ahora
+    </a>
+  </div>
+</div>
+
+<div class="card border-0 shadow-sm" style="max-width: 640px;">
+  <div class="card-body">
+    <h6 class="mb-1">Restaurar</h6>
+    <p class="text-muted small">
+      Sube un archivo de respaldo (.db) para reemplazar <strong>todos</strong> los datos
+      actuales. Se guarda automáticamente una copia de la base actual antes de restaurar.
+      Deberás reiniciar la aplicación después de restaurar.
+    </p>
+    <form method="post" action="{{ url_for('respaldo.restaurar') }}" enctype="multipart/form-data"
+          onsubmit="return confirm('¿Restaurar esta base de datos? Se reemplazarán TODOS los datos actuales.');">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <div class="mb-3">
+        <input type="file" name="archivo" accept=".db" class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-danger">
+        <i class="bi bi-upload me-1"></i>Restaurar desde archivo
+      </button>
+    </form>
+  </div>
+</div>
+{% endif %}
+{% endblock %}

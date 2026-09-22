@@ -25,10 +25,12 @@ def create_app(config_class=Config):
     from app.auth import bp as auth_bp
     from app.integracion import bp as integracion_bp
     from app.main import bp as main_bp
+    from app.respaldo import bp as respaldo_bp
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(main_bp)
     app.register_blueprint(integracion_bp)
+    app.register_blueprint(respaldo_bp)
 
     for crud_bp in build_crud_blueprints():
         app.register_blueprint(crud_bp)

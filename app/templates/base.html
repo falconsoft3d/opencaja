@@ -76,6 +76,11 @@
             <i class="bi bi-plug me-2"></i>Integración
           </a>
         </li>
+        <li class="nav-item">
+          <a href="{{ url_for('respaldo.index') }}" class="nav-link {{ 'active' if request.blueprint == 'respaldo' }}">
+            <i class="bi bi-archive me-2"></i>Respaldos
+          </a>
+        </li>
         {% endif %}
         <li class="nav-item">
           <a href="{{ url_for('main.perfil') }}" class="nav-link {{ 'active' if request.endpoint == 'main.perfil' }}">
