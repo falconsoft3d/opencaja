@@ -37,17 +37,11 @@ docker compose version
 
 ## 3. Subir el código al servidor
 
-Con git (recomendado):
 ```bash
 sudo mkdir -p /opt/opencaja
 sudo chown $USER:$USER /opt/opencaja
-git clone <url-de-tu-repositorio> /opt/opencaja
+git clone https://github.com/falconsoft3d/opencaja.git /opt/opencaja
 cd /opt/opencaja
-```
-
-Sin git (copiando desde tu máquina):
-```bash
-scp -r /ruta/local/opencaja usuario@servidor:/opt/opencaja
 ```
 
 ## 4. Configurar variables de entorno
