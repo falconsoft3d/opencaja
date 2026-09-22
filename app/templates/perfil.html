@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Perfil - OpenCaja{% endblock %}
+{% block page_title %}Mi Perfil{% endblock %}
+{% block content %}
+<div class="card border-0 shadow-sm" style="max-width: 480px;">
+  <div class="card-body">
+    <p class="text-muted mb-1">Usuario: <strong>{{ current_user.username }}</strong></p>
+    <p class="text-muted">Email: <strong>{{ current_user.email }}</strong></p>
+    <hr>
+    <h6 class="mb-3">Cambiar contraseña</h6>
+    <form method="post" novalidate>
+      {{ form.hidden_tag() }}
+      {% for field in form if field.name not in ('csrf_token', 'submit') %}
+      <div class="mb-3">
+        {{ field.label(class="form-label") }}
+        {{ field(class="form-control" ~ (" is-invalid" if field.errors else "")) }}
+        {% for error in field.errors %}
+        <div class="invalid-feedback d-block">{{ error }}</div>
+        {% endfor %}
+      </div>
+      {% endfor %}
+      {{ form.submit(class="btn btn-primary") }}
+    </form>
+  </div>
+</div>
+{% endblock %}

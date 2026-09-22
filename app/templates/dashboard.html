@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - OpenCaja{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block content %}
+<div class="row g-3">
+  <div class="col-md-3">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <div class="text-muted small">Proyectos</div>
+        <div class="fs-3 fw-bold">{{ total_proyectos }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <div class="text-muted small">Clientes</div>
+        <div class="fs-3 fw-bold">{{ total_clientes }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <div class="text-muted small">Pagos de Cliente</div>
+        <div class="fs-3 fw-bold">{{ total_pagos_cliente }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <div class="text-muted small">Pagos a Proveedor</div>
+        <div class="fs-3 fw-bold">{{ total_pagos_proveedor }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

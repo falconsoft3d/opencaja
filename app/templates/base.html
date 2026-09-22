@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}OpenCaja{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+  <div class="d-flex">
+    <nav class="sidebar bg-dark text-white p-3">
+      <a href="{{ url_for('main.dashboard') }}" class="d-flex align-items-center mb-4 text-white text-decoration-none">
+        <i class="bi bi-cash-coin fs-4 me-2"></i>
+        <span class="fs-5 fw-bold">OpenCaja</span>
+      </a>
+      <ul class="nav nav-pills flex-column gap-1">
+        <li class="nav-item">
+          <a href="{{ url_for('main.dashboard') }}" class="nav-link {{ 'active' if request.endpoint == 'main.dashboard' }}">
+            <i class="bi bi-speedometer2 me-2"></i>Dashboard
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{{ url_for('proyectos.index') }}" class="nav-link {{ 'active' if request.blueprint == 'proyectos' }}">
+            <i class="bi bi-kanban me-2"></i>Proyectos
+          </a>
+        </li>
+        {% set contactos_activo = request.blueprint in ('clientes', 'proveedores') %}
+        <li class="nav-item">
+          <a href="#contactosMenu" class="nav-link d-flex justify-content-between align-items-center {{ 'active' if contactos_activo }}" data-bs-toggle="collapse" role="button" aria-expanded="{{ 'true' if contactos_activo else 'false' }}" aria-controls="contactosMenu">
+            <span><i class="bi bi-person-lines-fill me-2"></i>Contactos</span>
+            <i class="bi bi-chevron-down small"></i>
+          </a>
+          <div class="collapse {{ 'show' if contactos_activo }}" id="contactosMenu">
+            <ul class="nav nav-pills flex-column gap-1 ms-3 mt-1">
+              <li class="nav-item">
+                <a href="{{ url_for('clientes.index') }}" class="nav-link {{ 'active' if request.blueprint == 'clientes' }}">
+                  <i class="bi bi-people me-2"></i>Clientes
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ url_for('proveedores.index') }}" class="nav-link {{ 'active' if request.blueprint == 'proveedores' }}">
+                  <i class="bi bi-truck me-2"></i>Proveedores
+                </a>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a href="{{ url_for('pagos_cliente.index') }}" class="nav-link {{ 'active' if request.blueprint == 'pagos_cliente' }}">
+            <i class="bi bi-cash-stack me-2"></i>Pagos de Cliente
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="{{ url_for('pagos_proveedor.index') }}" class="nav-link {{ 'active' if request.blueprint == 'pagos_proveedor' }}">
+            <i class="bi bi-cash-coin me-2"></i>Pagos a Proveedor
+          </a>
+        </li>
+        {% if current_user.is_admin %}
+        <li class="nav-item">
+          <a href="{{ url_for('usuarios.index') }}" class="nav-link {{ 'active' if request.blueprint == 'usuarios' }}">
+            <i class="bi bi-person-badge me-2"></i>Usuarios
+          </a>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+          <a href="{{ url_for('main.perfil') }}" class="nav-link {{ 'active' if request.endpoint == 'main.perfil' }}">
+            <i class="bi bi-person-circle me-2"></i>Perfil
+          </a>
+        </li>
+      </ul>
+      <hr>
+      <a href="{{ url_for('auth.logout') }}" class="nav-link text-white">
+        <i class="bi bi-box-arrow-right me-2"></i>Cerrar sesión
+      </a>
+    </nav>
+    <main class="flex-grow-1 p-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0">{% block page_title %}{% endblock %}</h4>
+        <span class="text-muted">
+          <i class="bi bi-person-circle me-1"></i>{{ current_user.username }}
+          {% if current_user.is_admin %}<span class="badge bg-primary ms-1">Admin</span>{% endif %}
+        </span>
+      </div>
+      {% include "_flashes.html" %}
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

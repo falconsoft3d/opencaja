@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} - OpenCaja{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="card border-0 shadow-sm" style="max-width: 560px;">
+  <div class="card-body">
+    {% if instance and instance.secuencia is defined %}
+    <div class="alert alert-secondary py-2">
+      <strong>Secuencia:</strong> {{ instance.secuencia }}
+    </div>
+    {% endif %}
+    <form method="post" novalidate>
+      {{ form.hidden_tag() }}
+      {% for field in form if field.name not in ('csrf_token', 'submit') %}
+      <div class="mb-3">
+        {{ field.label(class="form-label") }}
+        {% if field.type == 'BooleanField' %}
+        <div class="form-check">
+          {{ field(class="form-check-input") }}
+        </div>
+        {% else %}
+        {{ field(class="form-control" ~ (" is-invalid" if field.errors else "")) }}
+        {% endif %}
+        {% if field.name == 'password' %}
+        <div class="form-text">Dejar en blanco para no cambiar la contraseña.</div>
+        {% endif %}
+        {% for error in field.errors %}
+        <div class="invalid-feedback d-block">{{ error }}</div>
+        {% endfor %}
+      </div>
+      {% endfor %}
+      <div class="d-flex gap-2">
+        {{ form.submit(class="btn btn-primary") }}
+        <a href="{{ url_for(endpoint ~ '.index') }}" class="btn btn-outline-secondary">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
