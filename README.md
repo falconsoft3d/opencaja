@@ -36,6 +36,8 @@ Abrir http://127.0.0.1:5000 e iniciar sesión con el usuario administrador cread
 
 ## Producción con Docker
 
+Guía completa paso a paso para instalarlo en un servidor Ubuntu: [DEPLOY.md](DEPLOY.md).
+
 La imagen usa Gunicorn (no el servidor de desarrollo de Flask). El entrypoint crea las tablas
 automáticamente al arrancar y, si se definen `ADMIN_USERNAME`/`ADMIN_EMAIL`/`ADMIN_PASSWORD`,
 crea el usuario administrador la primera vez (en arranques posteriores lo omite si ya existe).
