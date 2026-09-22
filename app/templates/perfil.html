@@ -23,4 +23,37 @@
     </form>
   </div>
 </div>
+
+<div class="card border-0 shadow-sm mt-3" style="max-width: 480px;">
+  <div class="card-body">
+    <h6 class="mb-1">Bloqueo por inactividad</h6>
+    <p class="text-muted small">
+      Si defines un PIN, la sesión se bloquea tras 5 minutos sin actividad y deberás ingresarlo
+      para continuar (también puedes bloquearla manualmente desde el menú lateral). Si no
+      defines un PIN, la sesión se cerrará automáticamente tras 5 minutos de inactividad.
+    </p>
+    {% if current_user.has_pin %}
+    <div class="alert alert-success py-2 d-flex justify-content-between align-items-center">
+      <span><i class="bi bi-shield-lock me-1"></i>PIN activo</span>
+      <form method="post" action="{{ url_for('main.eliminar_pin') }}" onsubmit="return confirm('¿Quitar el PIN? La sesión se cerrará tras 5 minutos de inactividad.');">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" class="btn btn-sm btn-outline-danger">Quitar PIN</button>
+      </form>
+    </div>
+    {% endif %}
+    <form method="post" action="{{ url_for('main.actualizar_pin') }}" novalidate>
+      {{ pin_form.hidden_tag() }}
+      {% for field in pin_form if field.name not in ('csrf_token', 'submit_pin') %}
+      <div class="mb-3">
+        {{ field.label(class="form-label") }}
+        {{ field(class="form-control" ~ (" is-invalid" if field.errors else ""), inputmode="numeric", maxlength="6", autocomplete="off") }}
+        {% for error in field.errors %}
+        <div class="invalid-feedback d-block">{{ error }}</div>
+        {% endfor %}
+      </div>
+      {% endfor %}
+      {{ pin_form.submit_pin(class="btn btn-primary") }}
+    </form>
+  </div>
+</div>
 {% endblock %}

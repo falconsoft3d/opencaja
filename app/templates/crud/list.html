@@ -57,6 +57,16 @@
         </tr>
         {% endfor %}
       </tbody>
+      {% if footer_cells %}
+      <tfoot>
+        <tr class="table-light fw-bold">
+          {% for value in footer_cells %}
+          <td>{{ value }}</td>
+          {% endfor %}
+          <td></td>
+        </tr>
+      </tfoot>
+      {% endif %}
     </table>
   </div>
 </div>

@@ -10,6 +10,8 @@ class CrudValidationError(Exception):
 
 
 def _resolve(item, attr):
+    if callable(attr):
+        return attr(item)
     value = item
     for part in attr.split("."):
         value = getattr(value, part)
@@ -29,11 +31,13 @@ def make_crud_blueprint(
     extra_decorators=None,
     form_init=None,
     extra_row_action=None,
+    footer=None,
 ):
     """Crea un blueprint con las vistas listar/crear/editar/eliminar para un modelo.
 
     columns: lista de (atributo, etiqueta) mostrados en la tabla del listado; el atributo
-        admite notación con puntos para relaciones (ej. "proyecto.nombre").
+        admite notación con puntos para relaciones (ej. "proyecto.nombre") o un callable
+        item -> valor para columnas calculadas (ej. un saldo).
     before_save: callback(instance, form, is_create) para lógica extra (ej. hash de password,
         generar una secuencia autoincremental).
     exclude_fields: campos del formulario que no deben copiarse directo al modelo.
@@ -41,6 +45,8 @@ def make_crud_blueprint(
         dinámicos (ej. SelectField de un modelo relacionado) antes de validar/renderizar.
     extra_row_action: dict {"endpoint", "label", "icon"} para un botón extra por fila en el
         listado, que enlaza a url_for(f"{name}.{endpoint}", item_id=...) (ej. comprobante).
+    footer: callback(items) -> lista de valores (mismo largo que columns) para una fila de
+        totales al pie del listado.
     """
     bp = Blueprint(name, import_name, url_prefix=f"/{name}")
     decorators = [login_required] + (extra_decorators or [])
@@ -85,6 +91,7 @@ def make_crud_blueprint(
             singular=singular,
             endpoint=name,
             extra_row_action=extra_row_action,
+            footer_cells=footer(items) if footer else None,
         )
 
     def create():

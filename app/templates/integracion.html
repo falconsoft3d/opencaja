@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Integración - OpenCaja{% endblock %}
+{% block page_title %}Integración{% endblock %}
+{% block content %}
+<div class="card border-0 shadow-sm mb-3" style="max-width: 640px;">
+  <div class="card-body">
+    <h6 class="mb-3">URL del servicio</h6>
+    <p class="text-muted small">
+      Servicio externo que devuelve un listado de proyectos en JSON (campos <code>name</code>
+      como código y <code>nombre</code> como nombre del proyecto).
+    </p>
+    <form method="post" action="{{ url_for('integracion.index') }}" novalidate>
+      {{ form.hidden_tag() }}
+      <div class="mb-3">
+        {{ form.url.label(class="form-label") }}
+        {{ form.url(class="form-control" ~ (" is-invalid" if form.url.errors else "")) }}
+        {% for error in form.url.errors %}
+        <div class="invalid-feedback d-block">{{ error }}</div>
+        {% endfor %}
+      </div>
+      {{ form.submit(class="btn btn-primary") }}
+    </form>
+  </div>
+</div>
+
+<div class="card border-0 shadow-sm" style="max-width: 640px;">
+  <div class="card-body">
+    <h6 class="mb-1">Importar proyectos</h6>
+    <p class="text-muted small">
+      Consulta la URL configurada y crea los proyectos que no existan todavía (comparando por
+      código). Los que ya existen se omiten.
+    </p>
+    <form method="post" action="{{ url_for('integracion.importar') }}" onsubmit="return confirm('¿Importar proyectos desde la URL configurada?');">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button type="submit" class="btn btn-success" {{ "disabled" if not config.url }}>
+        <i class="bi bi-cloud-download me-1"></i>Importar proyectos ahora
+      </button>
+      {% if not config.url %}
+      <div class="form-text text-danger">Configura primero la URL del servicio.</div>
+      {% endif %}
+    </form>
+  </div>
+</div>
+{% endblock %}

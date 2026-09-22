@@ -49,6 +49,7 @@
         <tr><th class="w-25">Tipo</th><td>{{ tipo }}</td></tr>
         <tr><th>Proyecto</th><td>{{ pago.proyecto.codigo }} - {{ pago.proyecto.nombre }}</td></tr>
         <tr><th>{{ tercero_label }}</th><td>{{ tercero_nombre }}</td></tr>
+        <tr><th>Diario</th><td>{{ pago.diario.nombre }}</td></tr>
         <tr><th>Importe</th><td class="fs-5 fw-bold">{{ "%.2f"|format(pago.importe) }} {{ pago.moneda }}</td></tr>
         {% if pago.nota %}
         <tr><th>Nota</th><td>{{ pago.nota }}</td></tr>
